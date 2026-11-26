@@ -1,0 +1,71 @@
+iso3,group,au_region,landlocked,notes
+DZA,Africa,North,N,
+EGY,Africa,North,N,
+LBY,Africa,North,N,
+MRT,Africa,North,N,
+MAR,Africa,North,N,
+TUN,Africa,North,N,
+BEN,Africa,West,N,
+BFA,Africa,West,Y,
+CPV,Africa,West,N,
+CIV,Africa,West,N,
+GMB,Africa,West,N,
+GHA,Africa,West,N,
+GIN,Africa,West,N,
+GNB,Africa,West,N,
+LBR,Africa,West,N,
+MLI,Africa,West,Y,
+NER,Africa,West,Y,
+NGA,Africa,West,N,
+SEN,Africa,West,N,
+SLE,Africa,West,N,
+TGO,Africa,West,N,
+BDI,Africa,Central,Y,
+CMR,Africa,Central,N,
+CAF,Africa,Central,Y,
+TCD,Africa,Central,Y,
+COG,Africa,Central,N,
+COD,Africa,Central,N,
+GNQ,Africa,Central,N,
+GAB,Africa,Central,N,
+STP,Africa,Central,N,
+COM,Africa,East,N,
+DJI,Africa,East,N,
+ERI,Africa,East,N,
+ETH,Africa,East,Y,
+KEN,Africa,East,N,
+MDG,Africa,East,N,
+MUS,Africa,East,N,
+RWA,Africa,East,Y,
+SYC,Africa,East,N,
+SOM,Africa,East,N,
+SSD,Africa,East,Y,Independent from 2011; pre-2011 values sit inside SDN
+SDN,Africa,East,N,Series break 2011 (South Sudan secession)
+TZA,Africa,East,N,
+UGA,Africa,East,Y,
+AGO,Africa,Southern,N,
+BWA,Africa,Southern,Y,
+SWZ,Africa,Southern,Y,
+LSO,Africa,Southern,Y,
+MWI,Africa,Southern,Y,
+MOZ,Africa,Southern,N,
+NAM,Africa,Southern,N,
+ZAF,Africa,Southern,N,
+ZMB,Africa,Southern,Y,
+ZWE,Africa,Southern,Y,
+WLD,Comparator aggregate,,,World
+SSF,Comparator aggregate,,,Sub-Saharan Africa (WB aggregate)
+AFE,Comparator aggregate,,,Africa Eastern and Southern (WB aggregate)
+AFW,Comparator aggregate,,,Africa Western and Central (WB aggregate)
+LIC,Comparator aggregate,,,Low income
+LMC,Comparator aggregate,,,Lower middle income
+UMC,Comparator aggregate,,,Upper middle income
+HIC,Comparator aggregate,,,High income
+OED,Comparator aggregate,,,OECD members
+CHN,Comparator country,,,China
+IND,Comparator country,,,India
+BRA,Comparator country,,,Brazil
+IDN,Comparator country,,,Indonesia
+USA,Comparator country,,,United States
+DEU,Comparator country,,,Germany
+GBR,Comparator country,,,United Kingdom
