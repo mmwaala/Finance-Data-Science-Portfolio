@@ -1,0 +1,71 @@
+iso3,country_name,group,au_region,wb_region,income_group,landlocked,notes
+DZA,Algeria,Africa,North,"Middle East, North Africa, Afghanistan & Pakistan",Upper middle income,N,
+EGY,Egypt,Africa,North,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,N,
+LBY,Libya,Africa,North,"Middle East, North Africa, Afghanistan & Pakistan",Upper middle income,N,
+MRT,Mauritania,Africa,North,Sub-Saharan Africa ,Lower middle income,N,
+MAR,Morocco,Africa,North,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,N,
+TUN,Tunisia,Africa,North,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,N,
+BEN,Benin,Africa,West,Sub-Saharan Africa ,Lower middle income,N,
+BFA,Burkina Faso,Africa,West,Sub-Saharan Africa ,Low income,Y,
+CPV,Cabo Verde,Africa,West,Sub-Saharan Africa ,Upper middle income,N,
+CIV,Côte d'Ivoire,Africa,West,Sub-Saharan Africa ,Lower middle income,N,
+GMB,Gambia,Africa,West,Sub-Saharan Africa ,Low income,N,
+GHA,Ghana,Africa,West,Sub-Saharan Africa ,Lower middle income,N,
+GIN,Guinea,Africa,West,Sub-Saharan Africa ,Lower middle income,N,
+GNB,Guinea-Bissau,Africa,West,Sub-Saharan Africa ,Low income,N,
+LBR,Liberia,Africa,West,Sub-Saharan Africa ,Low income,N,
+MLI,Mali,Africa,West,Sub-Saharan Africa ,Low income,Y,
+NER,Niger,Africa,West,Sub-Saharan Africa ,Low income,Y,
+NGA,Nigeria,Africa,West,Sub-Saharan Africa ,Lower middle income,N,
+SEN,Senegal,Africa,West,Sub-Saharan Africa ,Lower middle income,N,
+SLE,Sierra Leone,Africa,West,Sub-Saharan Africa ,Low income,N,
+TGO,Togo,Africa,West,Sub-Saharan Africa ,Lower middle income,N,
+BDI,Burundi,Africa,Central,Sub-Saharan Africa ,Low income,Y,
+CMR,Cameroon,Africa,Central,Sub-Saharan Africa ,Lower middle income,N,
+CAF,Central African Republic,Africa,Central,Sub-Saharan Africa ,Low income,Y,
+TCD,Chad,Africa,Central,Sub-Saharan Africa ,Low income,Y,
+COG,Congo Republic,Africa,Central,Sub-Saharan Africa ,Lower middle income,N,
+COD,DR Congo,Africa,Central,Sub-Saharan Africa ,Low income,N,
+GNQ,Equatorial Guinea,Africa,Central,Sub-Saharan Africa ,Upper middle income,N,
+GAB,Gabon,Africa,Central,Sub-Saharan Africa ,Upper middle income,N,
+STP,Sao Tome and Principe,Africa,Central,Sub-Saharan Africa ,Lower middle income,N,
+COM,Comoros,Africa,East,Sub-Saharan Africa ,Lower middle income,N,
+DJI,Djibouti,Africa,East,"Middle East, North Africa, Afghanistan & Pakistan",Lower middle income,N,
+ERI,Eritrea,Africa,East,Sub-Saharan Africa ,Low income,N,
+ETH,Ethiopia,Africa,East,Sub-Saharan Africa ,Low income,Y,
+KEN,Kenya,Africa,East,Sub-Saharan Africa ,Lower middle income,N,
+MDG,Madagascar,Africa,East,Sub-Saharan Africa ,Low income,N,
+MUS,Mauritius,Africa,East,Sub-Saharan Africa ,Upper middle income,N,
+RWA,Rwanda,Africa,East,Sub-Saharan Africa ,Low income,Y,
+SYC,Seychelles,Africa,East,Sub-Saharan Africa ,High income,N,
+SOM,Somalia,Africa,East,Sub-Saharan Africa ,Low income,N,
+SSD,South Sudan,Africa,East,Sub-Saharan Africa ,Low income,Y,Independent from 2011; pre-2011 values sit inside SDN
+SDN,Sudan,Africa,East,Sub-Saharan Africa ,Low income,N,Series break 2011 (South Sudan secession)
+TZA,Tanzania,Africa,East,Sub-Saharan Africa ,Lower middle income,N,
+UGA,Uganda,Africa,East,Sub-Saharan Africa ,Low income,Y,
+AGO,Angola,Africa,Southern,Sub-Saharan Africa ,Lower middle income,N,
+BWA,Botswana,Africa,Southern,Sub-Saharan Africa ,Upper middle income,Y,
+SWZ,Eswatini,Africa,Southern,Sub-Saharan Africa ,Lower middle income,Y,
+LSO,Lesotho,Africa,Southern,Sub-Saharan Africa ,Lower middle income,Y,
+MWI,Malawi,Africa,Southern,Sub-Saharan Africa ,Low income,Y,
+MOZ,Mozambique,Africa,Southern,Sub-Saharan Africa ,Low income,N,
+NAM,Namibia,Africa,Southern,Sub-Saharan Africa ,Lower middle income,N,
+ZAF,South Africa,Africa,Southern,Sub-Saharan Africa ,Upper middle income,N,
+ZMB,Zambia,Africa,Southern,Sub-Saharan Africa ,Lower middle income,Y,
+ZWE,Zimbabwe,Africa,Southern,Sub-Saharan Africa ,Lower middle income,Y,
+WLD,World,Comparator aggregate,,Aggregates,Aggregates,,World
+SSF,Sub-Saharan Africa (WB aggregate),Comparator aggregate,,Aggregates,Aggregates,,Sub-Saharan Africa (WB aggregate)
+AFE,Africa Eastern and Southern (WB aggregate),Comparator aggregate,,Aggregates,Aggregates,,Africa Eastern and Southern (WB aggregate)
+AFW,Africa Western and Central (WB aggregate),Comparator aggregate,,Aggregates,Aggregates,,Africa Western and Central (WB aggregate)
+LIC,Low income,Comparator aggregate,,Aggregates,Aggregates,,Low income
+LMC,Lower middle income,Comparator aggregate,,Aggregates,Aggregates,,Lower middle income
+UMC,Upper middle income,Comparator aggregate,,Aggregates,Aggregates,,Upper middle income
+HIC,High income,Comparator aggregate,,Aggregates,Aggregates,,High income
+OED,OECD members,Comparator aggregate,,Aggregates,Aggregates,,OECD members
+CHN,China,Comparator country,,East Asia & Pacific,Upper middle income,,China
+IND,India,Comparator country,,South Asia,Lower middle income,,India
+BRA,Brazil,Comparator country,,Latin America & Caribbean ,Upper middle income,,Brazil
+IDN,Indonesia,Comparator country,,East Asia & Pacific,Upper middle income,,Indonesia
+USA,United States,Comparator country,,North America,High income,,United States
+DEU,Germany,Comparator country,,Europe & Central Asia,High income,,Germany
+GBR,United Kingdom,Comparator country,,Europe & Central Asia,High income,,United Kingdom
