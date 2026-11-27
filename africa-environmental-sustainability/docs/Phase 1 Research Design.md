@@ -1,29 +1,19 @@
-# Environmental Sustainability Intelligence Platform
-## Phase 1: Research Design and Data Discovery
+# Environmental Sustainability in Africa
+## Research Design and Data Discovery
 
-Prepared by Martin B. Mwaala | Version 0.1 for review | 26 November 2026
+Martin B. Mwaala | 26 November 2026
 
 ---
 
-## 1. Summary for approval
+## 1. Summary
 
-The project is feasible, but not as originally specified. The source review shows that the brief's six dimensions sit on data of very uneven quality. Carbon, energy access, GDP and governance data support a 54-country annual panel. Water and biodiversity data do not: they are sparse, modelled or a single snapshot. Several research questions in the brief would produce misleading answers if run on the obvious World Bank indicators.
+The project is feasible, but the six dimensions sit on data of very uneven quality. Carbon, energy access, GDP and governance data support a 54-country annual panel. Water and biodiversity data do not: they are sparse, modelled or a single snapshot. Several of the questions I started with would produce misleading answers if run on the obvious World Bank indicators, so I revised them before building anything (Section 5).
 
-What this phase delivers (all in this project folder):
+The project runs as ten Jupyter notebooks, CSV files in `data/` and a Python (Plotly Dash) dashboard. The indicator catalogue (88 indicators) is in `config/indicator-catalogue.csv` and the country list (54 African countries, 9 comparator aggregates and 7 comparator countries) is in `config/countries.csv`.
 
-| Deliverable | File |
-|---|---|
-| Indicator catalogue: 76 indicators, 7 groups, codes, units, coverage, access, licence, limitations | `config/indicator-catalogue.csv` |
-| Country scope: 54 African countries by AU region, plus 16 comparators | `config/countries.csv` |
-| Evidence-based data availability matrix (generated, not assumed) | `scripts/phase1-coverage-audit.py` writes to `outputs/phase1/` |
-| Proposed database structure | `database/schema.sql` |
-| Full pipeline, analysis and dashboard (built after Phase 1) | `esip/`, `scripts/pipeline.py`, `dashboard/`, `notebooks/` |
-| Methodology, limitations, implementation sequence | this document |
+Data coverage is measured, not estimated. `01 Data.ipynb` pulls every World Bank code, saves the raw responses and calculates coverage for each country and indicator (Section 6). Of the 79 indicators pulled, 68 are complete enough for panel work.
 
-**One point on the availability matrix.** The country-by-indicator matrix has to be measured, not estimated. My workspace could not reach the World Bank API, so I did not fill the matrix by hand. The audit script does it on your MacBook in about five minutes. It checks every code, saves the raw responses and calculates coverage per country. Section 6 gives the expected coverage for each indicator from the publishers' documentation. The script replaces that with measured values.
-
-### Eight findings that change the design
-
+### Eight findings that shaped the design
 1. **"Renewable energy share" is mostly poverty in Africa.** `EG.FEC.RNEW.ZS` counts traditional biomass (firewood, charcoal) as renewable. DRC, Ethiopia and Uganda score near the top of the world, and the share falls as countries get richer and switch to LPG and grid power. A naive regression would "find" that development reduces renewable adoption. Fix: measure the transition with renewable electricity generation (Ember, IRENA) and clean cooking access (`EG.CFT.ACCS.ZS`). Keep `EG.FEC.RNEW.ZS` only as context.
 2. **Energy CO2 understates emissions in Africa's forest economies.** The World Bank's EDGAR series exclude land use change (LULUCF). For DRC, Zambia, Tanzania and Mozambique, land use change emissions are likely the larger part of the total. Fix: report energy CO2 and LULUCF separately, and never add them without a flag. Use Global Carbon Budget data through OWID as a cross-check.
 3. **FAO forest area series are often straight lines.** For many African countries the annual values are interpolated between assessment years. Year-on-year changes are artefacts. Fix: use forest area for levels and 5-year changes only. Use satellite tree cover loss for annual dynamics.
@@ -33,19 +23,20 @@ What this phase delivers (all in this project folder):
 7. **ND-GAIN versus GDP is partly circular.** Readiness includes economic components, and vulnerability includes adaptive capacity, both of which move with income. Regressing ND-GAIN on GDP partly regresses GDP on itself. Fix: use the components, the GDP-adjusted score that ND-GAIN publishes, and an explicit test of the overlap.
 8. **2000 to 2024 is the search window, not the analytical window.** Most series end between 2021 and 2023. The realistic common panel is about 2000 to 2021 or 2022. That gives T of about 22 and N of 54: enough for fixed effects with robust errors, but too short for credible ARIMA on most country series.
 
-### Decisions needed from you before Phase 2
+### Design choices
 
-| # | Decision | Recommendation |
-|---|---|---|
-| D1 | Country scope | All 54 AU member states (North Africa included), with Sub-Saharan subsets for robustness. Western Sahara excluded (no World Bank coverage) |
-| D2 | Comparators | World, WB aggregates (SSF, AFE, AFW), the four income groups, OECD, plus China, India, Brazil, Indonesia, USA, Germany, UK |
-| D3 | Analytical window | 2000 to latest common year per model (expected 2021 to 2022); descriptive charts to latest available year |
-| D4 | Added sources | Add Ember (electricity mix), UN SDG API (Red List Index) and FAO FRA 2025 to the brief's nine sources |
-| D5 | Revised research questions | Approve the rewording in Section 5 |
-| D6 | Composite index | No composite ranking in Phases 4 to 6. Clusters and dimension-level rankings only |
-| D7 | Storage | DuckDB database plus Parquet exports. The dashboard reads the same validated store |
-| D8 | Dashboard | Python dashboard built with Plotly Dash (Power BI style: pages, slicers, cross-filtering). Runs natively on your MacBook; see Section 9.1 |
-| D9 | Public repo | Fine for World Bank, FAO, GFW, Ember, ND-GAIN and OWID outputs, with attribution. IUCN raw data must stay out of the public repo |
+| Area | Choice |
+|---|---|
+| Country scope | All 54 AU member states (North Africa included), with Sub-Saharan subsets for robustness. Western Sahara excluded (no World Bank coverage) |
+| Comparators | World, WB aggregates (SSF, AFE, AFW), the four income groups, OECD, plus China, India, Brazil, Indonesia, USA, Germany, UK |
+| Analytical window | 2000 to the latest common year per model; descriptive charts to the latest available year |
+| Added sources | Ember (electricity mix), UN SDG database (Red List Index) and FAO FRA 2025, alongside the World Bank, FAOSTAT, ND-GAIN, Global Forest Watch, IRENA, IUCN and OWID |
+| Composite index | No composite ranking. Clusters and dimension-level rankings only |
+| Storage | CSV files in `data/`: long observation table, country-year panel, indicator dictionary and quality flags |
+| Dashboard | Python dashboard built with Plotly Dash (pages, filters, cross-filtering) |
+| Public repo | Fine for World Bank, FAO, GFW, Ember, ND-GAIN and OWID outputs, with attribution. IUCN raw data stays out of the public repo |
+
+---
 
 ---
 
@@ -58,7 +49,7 @@ What this phase delivers (all in this project folder):
 - **Small island states** (Cabo Verde, Comoros, Mauritius, Sao Tome and Principe, Seychelles): very low absolute emissions and forest area. Per-capita and share measures behave erratically. Flag them in clustering.
 - **16 landlocked countries:** marine protected area is *not applicable*, which must not be stored as zero.
 
-**Comparators.** World, World Bank aggregates (Sub-Saharan Africa, Africa Eastern and Southern, Africa Western and Central), the four income groups, OECD, and seven reference countries. The brief's "developed versus developing" contrast should use income groups, not a binary label.
+**Comparators.** World, World Bank aggregates (Sub-Saharan Africa, Africa Eastern and Southern, Africa Western and Central), the four income groups, OECD, and seven reference countries. The "developed versus developing" contrast uses income groups, not a binary label.
 
 **Period.** Pull 2000 to 2024. Analyse on the longest common window each model supports. Report the window with every result.
 
@@ -81,13 +72,13 @@ What this phase delivers (all in this project folder):
 | **Added: Ember** | Yearly electricity data CSV; API | Key for API | CC BY 4.0 (confirm on download page) | 2000 onward, 200+ geographies | Monthly | Best open source for electricity mix in Africa |
 | **Added: UN SDG Global Database** | SDG API v5 | None | Open with attribution | Red List Index 1993 onward | Annual | Time-series fix for the biodiversity dimension |
 
-"Confirm" items will be checked in Phase 2 against the licence text on the download page, and the exact wording will be recorded in `dim_source`.
+"Confirm" items are checked against the licence text on each download page, and the wording is recorded in the indicator dictionary.
 
 ---
 
 ## 4. Indicator catalogue
 
-The full catalogue is `config/indicator-catalogue.csv`: 76 indicators with code, source, unit, frequency, expected coverage, endpoint, licence, role and known limitations. Each indicator is tagged with a **role**:
+The full catalogue is `config/indicator-catalogue.csv`: 88 indicators with code, source, unit, frequency, expected coverage, endpoint, licence, role and known limitations. Each indicator is tagged with a **role**:
 
 - **Core:** used in the main models and dashboard.
 - **Supporting:** decomposition or robustness.
@@ -96,7 +87,7 @@ The full catalogue is `config/indicator-catalogue.csv`: 76 indicators with code,
 - **Cross-section only:** a single snapshot or period average, never used in a panel.
 - **Legacy:** probably discontinued around 2015. Kept so the audit can confirm the end year and the series can be retired.
 
-**Verification status.** Codes marked "Verified in source search" were seen on the publisher's own pages or API during this phase. Codes marked "Confirm with audit script" follow the current World Bank naming pattern but were not individually confirmed. The audit script reports any invalid code. Nothing invalid moves into Phase 2.
+**Verification status.** Every World Bank code is checked when `01 Data.ipynb` pulls it. A code that returns nothing is reported and left out of the analysis.
 
 ### Group summary
 
@@ -116,7 +107,7 @@ The full catalogue is `config/indicator-catalogue.csv`: 76 indicators with code,
 
 ## 5. Research questions: revised wording
 
-| Dimension | Original question | Problem | Proposed wording |
+| Dimension | Question as first framed | Problem | Question as tested |
 |---|---|---|---|
 | A | Fastest growth in emissions | Growth from tiny bases (e.g. 0.05 t per capita) produces meaningless percentages | Largest absolute and per-capita increases, 2000 to latest; growth rates reported only above a materiality floor |
 | A | Is economic growth associated with emissions? | Fine as an association; the EKC form needs care at Africa's income range | Association between GDP per capita (PPP) and CO2 per capita, within-country, with income-squared tested and not assumed |
@@ -133,31 +124,26 @@ The full catalogue is `config/indicator-catalogue.csv`: 76 indicators with code,
 
 ---
 
-## 6. Data availability matrix
+---
 
-### 6.1 How the matrix is produced
+## 6. Data availability
 
-`scripts/phase1-coverage-audit.py` reads the catalogue and, for each of the 60 World Bank indicators:
+### 6.1 How coverage is measured
 
-1. confirms the code exists and pulls its official definition and source organisation (this becomes the first draft of the data dictionary);
-2. downloads all observations for 2000 to 2024 and saves the raw response with a timestamp;
-3. computes, for every country in scope: number of observed years, coverage %, first and last year, longest run of missing years, and the count of zero values (so true zeros can be reviewed separately from missing values);
-4. classifies each indicator on Africa-wide coverage: **Panel ready** (80% or more of country-years observed), **Limited panel** (50% to 80%), **Descriptive or cross-section only** (under 50%).
+Section 7 of `01 Data.ipynb` measures, for every indicator and every African country, the share of the 25 years from 2000 to 2024 with an observed value. It also records the first and last year, the longest run of missing years and the count of zero values, so true zeros can be reviewed separately from missing values. Each indicator is then classified on Africa-wide coverage:
 
-Outputs in `outputs/phase1/`: `availability matrix.xlsx` (Tahoma 8, frozen headers; cells under 50% in red font, 50% to 80% shaded grey), plus CSV versions and `data dictionary draft.csv`.
+- **Panel ready:** 80% or more of country-years observed.
+- **Limited panel:** 50% to 80%.
+- **Descriptive or cross-section only:** under 50%.
 
-The 16 specialist-source indicators (GFW, FRA, ND-GAIN, Ember, IRENA, IUCN, UN SDG, CCKP, OWID) are audited in Phase 2. Most need a key or a bulk file, and those files are the Phase 2 acquisition step anyway.
+### 6.2 What the measured coverage shows
 
-### 6.2 Expected coverage by indicator (from publisher documentation, to be replaced by audit results)
+- 68 of the 79 indicators pulled are complete enough for panel work.
+- Below 50% coverage: threatened species counts (a single snapshot year), disaster exposure (one 1990 to 2009 average), marine protected areas and terrestrial protected areas. These are used for cross-section comparisons only.
+- The quality checks in Section 8 of `01 Data.ipynb` confirm that FAO forest area and AQUASTAT water series are largely drawn in straight lines between survey years.
+- Indicators that need an API key or a manual file (Global Forest Watch, IRENA, CCKP, IUCN, FRA 2025) are listed in the catalogue but not pulled.
 
-| Expected Africa coverage | Indicators |
-|---|---|
-| Likely panel ready | EDGAR emissions (A01 to A06, A08), GDP and population (G01 to G07), electricity access (B06), basic water (D11), WGI governance (G12 to G15, with 2001 and earlier gaps), agricultural and forest land (C01, C07, structurally complete but interpolated) |
-| Likely limited | Renewable electricity shares (B02, B03), clean cooking (B08), energy intensity (B09), tree cover loss (C03), safely managed water (D10), PM2.5 (F09), ND-GAIN (F01 to F05; imputed internally by ND-GAIN) |
-| Likely descriptive only | AQUASTAT water (D01 to D09), protected areas (E05 to E07, sparse years), primary forest loss outside the humid tropics (C04), legacy energy series (B04, B05) |
-| Cross-section only by design | Threatened species counts (E01 to E04), climate disaster exposure average (F08) |
-
-### 6.3 What the matrix should answer
+### 6.3 What coverage decides
 
 - Which indicators enter the panel models (coverage rule plus quality flags).
 - Which countries drop out of each model, and whether drop-outs are systematic (e.g. conflict states), which would bias results.
@@ -189,7 +175,7 @@ The 16 specialist-source indicators (GFW, FRA, ND-GAIN, Ember, IRENA, IUCN, UN S
 
 ---
 
-## 8. Analytical method implications (preview of Phase 5)
+## 8. Analytical methods
 
 **Panel econometrics.** `statsmodels` does not include panel fixed or random effects estimators, so add `linearmodels` (`PanelOLS`, `RandomEffects`). The specification plan:
 
@@ -199,101 +185,40 @@ The 16 specialist-source indicators (GFW, FRA, ND-GAIN, Ember, IRENA, IUCN, UN S
 - Second-generation unit root tests (CIPS) before any cointegration claim. Python lacks a maintained Westerlund test. If cointegration becomes central, either implement it or run that single step in R or Stata, and document the step.
 - Lag governance and income by one year to reduce simultaneity, and state that this does not establish causality.
 
-**Clustering.** Cluster on standardised multi-year averages (e.g. 2015 to 2021), not single years, to dampen noise. Use PCA first to remove redundant indicators. Compare k-means with Ward hierarchical clustering. Validate with silhouette scores, bootstrap stability (Jaccard) and an expert sense-check of membership. Small island states may need separate treatment or robust scaling.
+**Clustering.** Cluster on standardised multi-year averages (e.g. 2015 to 2021), not single years, to dampen noise. Use PCA first to remove redundant indicators. Compare k-means with Ward hierarchical clustering. Validate with silhouette scores, bootstrap stability (Jaccard) and a sense-check of membership. Small island states may need separate treatment or robust scaling.
 
-**Forecasting.** Forecast only series with at least 15 observed (not interpolated) annual points and no unresolved break. Use ETS and ARIMA with rolling-origin backtests against a naive benchmark. Publish 80% and 95% intervals. Store forecasts only in `model_output` with `is_forecast = TRUE` and a distinct style in the dashboard. Do not forecast FAO forest area, AQUASTAT water or threatened species counts.
-
----
-
-## 9. Proposed database structure
-
-Full DDL in `database/schema.sql`. The design is a long-format observation fact table with complete provenance, plus conformed dimensions. It serves the notebooks and the Python dashboard from the same validated store.
-
-```
-dim_source ─┐
-dim_country ┼──< fact_observation >── dim_indicator
-            │         │
-map_country_alias     etl_load_log  (raw file path, SHA-256 hash, vintage, retrieval time, script version)
-dim_country_income_history
-qa_flag  (duplicates, outliers, year-on-year jumps, breaks, suspected interpolation; never overwrites data)
-derived_indicator  (documented formulas)
-model_output  (estimates and forecasts, is_forecast flag)
-```
-
-Key rules built into the schema:
-
-- `value` is NULL when not observed. `value_status` distinguishes observed, estimated, imputed by source, not applicable, and missing.
-- Publisher flags (FAOSTAT E, I and X; WB obs_status) are kept verbatim in `source_flag`.
-- Raw files in `data/raw/` are immutable. Re-pulls create a new `load_id`, so old results stay reproducible.
-- Original units are stored, and any conversion rule is recorded in `dim_indicator`.
-- Forecasts never enter `fact_observation`.
-- `dim_source.redistribution_ok` controls what may be exported to the public repo (FALSE for IUCN).
-
-**Technology.** DuckDB as a single-file analytical database, with Parquet exports of the analysis-ready country-year panel for notebooks and the dashboard. This keeps the full pipeline, analysis and dashboard in Python on your MacBook with no server.
-
-### 9.1 Dashboard design (Python, Power BI style)
-
-All analysis runs in Python (notebooks and scripts). The dashboard is also Python, so there is one language and one data store end to end.
-
-**Choice: Plotly Dash with Dash Bootstrap Components.** It gives the closest Power BI experience in Python: multi-page layout, slicers that filter every visual, click-to-cross-filter between charts, KPI cards and choropleth maps. It runs locally with `python dashboard/app.py` and opens in the browser. The alternative, Streamlit, is quicker to build but reruns the whole page on every filter change and handles cross-filtering poorly, so it suits prototypes better than an executive dashboard.
-
-**Pages (from the brief):** 1 Overview, 2 Carbon emissions, 3 Renewable energy transition, 4 Forests, 5 Water stress, 6 Biodiversity, 7 Climate vulnerability, 8 African country comparisons.
-
-**Standard controls on every page:** country, AU region, income group, year range, comparator (World, SSF, income group or reference country).
-
-**Standard visuals:** KPI cards (latest value, change since 2000, rank among 54), trend lines against comparators, ranked bar charts, Africa choropleth (Plotly built-in country boundaries, no GIS files needed), scatter plots for the relationships tested in Phase 5, and a missing-data heatmap so users see gaps instead of hidden blanks.
-
-**Integrity rules built into the components:**
-- Every chart has an info tooltip pulled from `dim_indicator`: definition, unit, source, vintage, and whether the series is observed, modelled or a composite.
-- Missing values show as gaps, never as zero, and a coverage note sits under each chart.
-- Forecasts use dashed lines and shaded intervals with a "Forecast" label, from `model_output` only.
-- No composite overall ranking (decision D6). Rankings are per indicator, with the indicator's polarity stated.
-
-**Delivery options:** run locally; export static HTML snapshots of each page for sharing; or deploy the app later to a free or low-cost host if you want a public portfolio link.
-
-### Project folder structure
-
-```
-Environmental Sustainability Platform/
-├── config/        indicator-catalogue.csv, countries.csv
-├── data/raw/      immutable source pulls (git-ignored)
-├── data/clean/    validated country-year tables (Parquet)
-├── database/      schema.sql, esip.duckdb
-├── docs/          research design, data dictionary, methodology notes
-├── notebooks/     01 to 07 EDA and analysis notebooks (Phase 4 onward)
-├── outputs/       phase outputs, charts, model tables
-├── dashboard/     Dash app: app.py, pages/, components/, assets/ theme (Phase 6)
-└── scripts/       extraction, cleaning, QA scripts
-```
+**Forecasting.** Forecast only series with at least 15 observed (not interpolated) annual points and no unresolved break. Use ETS and ARIMA with rolling-origin backtests against a naive benchmark. Publish 80% and 95% intervals. Keep forecasts in `data/forecasts.csv`, separate from observed data, with a distinct style in the dashboard. Do not forecast FAO forest area, AQUASTAT water or threatened species counts.
 
 ---
 
-## 10. Recommended implementation sequence
+## 9. Data rules
 
-| Step | Phase | Work | Exit criterion |
-|---|---|---|---|
-| 1 | 1 | Run the coverage audit on your MacBook; correct any invalid codes; review the matrix | All World Bank codes valid; matrix reviewed; decisions D1 to D9 approved |
-| 2 | 2 | World Bank extractor (WDI, ESG, WGI) from the catalogue | Raw files and load log for all World Bank indicators |
-| 3 | 2 | Specialist extractors in order of value: ND-GAIN zip, Ember, GFW (API key), FRA 2025, FAOSTAT bulk, IRENA PxWeb, UN SDG Red List Index, CCKP | Each source landed raw with licence text captured |
-| 4 | 3 | Country harmonisation (`map_country_alias`), unit checks, duplicate and break detection, interpolation detection on FAO series | QA flag report; zero values reviewed; Sudan and South Sudan handling documented |
-| 5 | 3 | Build DuckDB, load the fact table, export the country-year panel; finalise the data dictionary | Data dictionary complete for every loaded indicator |
-| 6 | 4 | EDA notebooks per dimension: trends, rankings, distributions, missingness maps, correlation matrices, choropleth maps | Preliminary findings note, each claim linked to a chart |
-| 7 | 5 | Panel models, clustering, then forecasting where the forecast rules are met | Model diagnostics pass; robustness tables |
-| 8 | 6 | Python dashboard (Plotly Dash) on the DuckDB store: 8 pages per the brief, with a definition, unit and source on every visual | Every metric traceable to `dim_indicator`; app runs from one command |
-| 9 | 7 | Research report: methodology, findings, limitations, recommendations | Findings validated against the notebooks |
+- A value is left blank when it is not observed. Missing values stay missing: nothing is interpolated and nothing is filled with zero.
+- "Not applicable" (for example, marine protected area for the 16 landlocked countries) is kept separate from "missing".
+- Publisher flags (FAOSTAT E, I and X; World Bank observation status) are kept as published.
+- Quality checks flag duplicates, outliers, year-on-year jumps, series breaks and suspected interpolation. They never change the data.
+- Raw downloads in `data/raw/` are kept unchanged, so results can be reproduced and later runs work offline.
+- Original units are kept, and any conversion or derived formula is recorded in the indicator dictionary.
+- Forecasts are kept separate from observed data.
+- IUCN raw data is not published in the repo.
 
-**Immediate next step:** in VS Code, open the project folder and run:
+## 10. Dashboard
 
-```
-pip install -r requirements.txt
-python scripts/phase1-coverage-audit.py
-```
+**Plotly Dash with Dash Bootstrap Components.** It gives a multi-page layout, filters that apply to every visual, click-to-cross-filter between charts, KPI cards and choropleth maps. It runs locally with `python dashboard/app.py` and opens in the browser. Streamlit is quicker to build but reruns the whole page on every filter change and handles cross-filtering poorly, so it suits prototypes better than an executive dashboard.
 
-Then send me `outputs/phase1/availability matrix.xlsx` and I will finalise the matrix section and the indicator shortlist.
+**Pages:** 1 Overview, 2 Carbon emissions, 3 Renewable energy transition, 4 Forests, 5 Water stress, 6 Biodiversity, 7 Climate vulnerability, 8 African country comparisons.
+
+**Standard visuals:** KPI cards (latest value, change since 2000, rank among 54), trend lines against comparators, ranked bar charts, an Africa choropleth, scatter plots for the relationships tested in the panel models, and coverage notes so gaps are visible instead of hidden.
+
+**Integrity rules:**
+- Every chart carries the indicator's definition, unit and source from the indicator dictionary.
+- Missing values show as gaps, never as zero.
+- Forecasts use dashed lines and shaded intervals with a "Forecast" label.
+- No composite overall ranking. Rankings are per indicator, with the indicator's polarity stated.
 
 ---
 
-## Sources consulted in Phase 1
+## Sources consulted
 
 - World Bank Data, EN.GHG.CO2.PC.CE.AR5 (EDGAR-based CO2 per capita): https://data.worldbank.org/indicator/EN.GHG.CO2.PC.CE.AR5
 - World Bank Metadata Glossary, EN.ATM.CO2E.PC (legacy Climate Watch series): https://databank.worldbank.org/metadataglossary/world-development-indicators/series/EN.ATM.CO2E.PC
@@ -315,3 +240,4 @@ Then send me `outputs/phase1/availability matrix.xlsx` and I will finalise the m
 - IUCN Red List API usage terms: https://iucn-uk.github.io/iucnredlist
 - Ember Yearly Electricity Data: https://ember-energy.org/data/yearly-electricity-data/
 - OWID solar and wind share (download and API pattern): https://ourworldindata.org/grapher/share-of-electricity-production-from-solar-and-wind
+
