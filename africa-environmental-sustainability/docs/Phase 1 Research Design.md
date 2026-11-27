@@ -5,8 +5,6 @@ Prepared by Martin B. Mwaala | Version 0.1 for review | 26 November 2026
 
 ---
 
-> **Update, 26 November 2026:** the project was rebuilt in the style of the LuSE ARDL project: ten Jupyter notebooks, CSV files in `data/`, and a Python (Dash) dashboard. The DuckDB database in Section 9 and the Power BI dashboard were dropped. The data rules in this document still apply.
-
 ## 1. Summary for approval
 
 The project is feasible, but not as originally specified. The source review shows that the brief's six dimensions sit on data of very uneven quality. Carbon, energy access, GDP and governance data support a 54-country annual panel. Water and biodiversity data do not: they are sparse, modelled or a single snapshot. Several research questions in the brief would produce misleading answers if run on the obvious World Bank indicators.
